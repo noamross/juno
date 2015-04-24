@@ -1,0 +1,11 @@
+Package: juno
+Type: Package
+Title: R utilities for interfacing with the Jupyter notebook
+Version: 0.1
+Date: 2015-04-24
+Author: Noam Ross
+Maintainer: Noam Ross <noam.ross@gmail.com>
+Description: Launch and view Jupyter notebooks, convert between Jupyter and knitr notebook files
+License: MIT
+Imports: jsonlite, stringi, yaml, rstudioapi
+LazyData: TRUE
