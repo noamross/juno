@@ -18,7 +18,7 @@
 view_url = function(url) {
   viewer <- getOption("viewer")
   if (!is.null(viewer)) {
-    rstudioapi::viewer(url)
+    rstudioapi::viewer(url, 2000)
   }
   else {
     utils::browseURL(url)
