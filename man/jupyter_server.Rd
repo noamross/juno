@@ -4,8 +4,8 @@
 \alias{jupyter_server}
 \title{Launch a jupyter server or connect with one already running}
 \usage{
-jupyter_server(dir = getwd(), port = 8888, ip = "localhost",
-  view = TRUE)
+jupyter_server(notebook = NULL, dir = NULL, port = 8888,
+  ip = "localhost", view = NULL)
 }
 \arguments{
 \item{dir}{the server working directory}

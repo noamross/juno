@@ -32,13 +32,45 @@ view_url = function(url) {
 #' @param ip the ip to launch the server on
 #' @param view open a viewer window or browser with the server?
 #' @export
-jupyter_server = function(dir=getwd(), port=8888, ip='localhost', view=TRUE) {
+#' @import stringi
+jupyter_server = function(notebook = NULL, dir=NULL, port=8888, ip='localhost', view=NULL) {
+
+  if(is.null(view)) view = !is.null(notebook)
+
+  if(!is.null(notebook)) {
+    if(!file.exists(notebook)) {
+      if(tools::file_ext(notebook) == "") {
+        notebook = paste0(notebook, ".ipynb")
+      }
+      file.copy(from = system.file('notebook_template.ipynb', package = "juno"),
+                to = notebook)
+      }
+  } else {
+    notebook_path=NULL
+  }
+
+
+  if(is.null(dir) & !is.null(notebook)) {
+    if(normalizePath(notebook) %in% normalizePath(list.files(getwd(), recursive=TRUE))) {
+      dir = getwd()
+      notebook_path = paste0('/notebooks',
+                             stri_extract_first_regex(normalizePath(notebook), paste0("(?<=", normalizePath(dir), "/).*")))
+    } else {
+      dir = dirname(normalizePath(notebook))
+      notebook_path = paste0('/notebooks/', notebook)
+    }
+  } else if(is.null(dir)) {
+    dir = getwd()
+  }
+
+
 
   server_options = list(dir=dir, port=port, ip=ip)
-  if(!is.null(file)) file = URLencode(file)
   running = check_local_url(.jupyter_server$url)
   if(running & (identical(server_options, .jupyter_server$server_options))) {
-    return(.jupyter_server$url)
+    notebook_path = URLencode(paste0(.jupyter_server$url, notebook_path))
+    if(view) view_url(notebook_path)
+    return(notebook_path)
   }
   if(running) {
     kill_jupyter_server()
@@ -51,9 +83,11 @@ jupyter_server = function(dir=getwd(), port=8888, ip='localhost', view=TRUE) {
   .jupyter_server$pid = readLines(tmp)
   .jupyter_server$server_options = server_options
   .jupyter_server$url = paste0('http://', ip, ':', port)
-  if(view) view_url(.jupyter_server$url)
 
-  return(.jupyter_server$url)
+  notebook_path = URLencode(paste0(.jupyter_server$url, notebook_path))
+  if(view) view_url(notebook_path)
+
+  return(notebook_path)
 
 }
 
