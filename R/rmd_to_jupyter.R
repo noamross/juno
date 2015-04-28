@@ -1,4 +1,5 @@
 #' @import knitr rmarkdown stringi jsonlite
+#' @export
 rmd_to_jupyter <- function(infile, outfile) {
   input_lines = rmarkdown:::read_lines_utf8(infile, getOption("encoding"))
   partitioned = rmarkdown:::partition_yaml_front_matter(input_lines)

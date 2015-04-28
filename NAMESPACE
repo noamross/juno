@@ -2,6 +2,7 @@
 
 export(jupyter_server)
 export(jupyter_to_rmd)
+export(rmd_to_jupyter)
 import(jsonlite)
 import(knitr)
 import(rmarkdown)
