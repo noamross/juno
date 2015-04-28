@@ -30,8 +30,10 @@ rmd_to_jupyter <- function(infile, outfile) {
       chunks[[i]]$source = chunks[[i]]$input.src
     }
     if(length(chunks[[i]]$source) > 1) {
+      chunks[[i]]$source = chunks[[i]]$source[chunks[[i]]$source != ""]
       chunks[[i]]$source[1:(length(chunks[[i]]$source) - 1)] =
-        stri_trim_both(paste0(chunks[[i]]$source[1:(length(chunks[[i]]$source) - 1)], "\n"))
+         paste0(chunks[[i]]$source[1:(length(chunks[[i]]$source) - 1)], "\n")
+
     }
     if(identical(chunks[[i]]$source, "")) chunks[[i]]$source = character()
   }
@@ -79,7 +81,7 @@ rmd_to_jupyter <- function(infile, outfile) {
   for(i in seq_along(jupyter$cells)) {
     if(length(jupyter$cells[[i]]$metadata) == 0) jupyter$cells[[i]]['metadata'] = list(NULL)
   }
-  cat(jsonlite::toJSON(jupyter, pretty=TRUE, auto_unbox=TRUE), file = outfile)
+  cat(jsonlite::toJSON(jupyter, pretty=TRUE, auto_unbox=TRUE, force=TRUE), file = outfile)
 
 }
 
