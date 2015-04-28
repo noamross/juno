@@ -11,10 +11,16 @@ rmd_to_jupyter <- function(infile, outfile) {
 
   chunks = knitr:::split_file(partitioned$body, patterns = knitr::all_patterns$md)
 
-  block_code = lapply(knitr:::knit_code$get(), function(x) {
+  block_code = knitr:::knit_code$get()
+
+  language = attr(block_code[[1]], "chunk_opts")$engine
+  if(is.null(language)) language = "r"
+
+  block_code = lapply(block_code, function(x) {
     attributes(x) <- NULL
     return(x)
   })
+
 
   for(i in seq_along(chunks)) {
     if(class(chunks[[i]]) == "block") {
@@ -54,10 +60,11 @@ rmd_to_jupyter <- function(infile, outfile) {
 
   jupyter = list()
   jupyter$cells = cells
-  jupyter$metadata = rmd_metadata$jupyter_info$metadata
+  jupyter_info = recursive_merge(rmd_metadata$jupyter_info, .default_jupyter_info[[language]])
+  jupyter$metadata = jupyter_info$metadata
   jupyter$metadata$knitr_metadata = rmd_metadata[names(rmd_metadata) != "jupyter_info"]
-  jupyter$nbformat = rmd_metadata$jupyter_info$nbformat
-  jupyter$nbformat_minor = rmd_metadata$jupyter_info$nbformat_minor
+  jupyter$nbformat = jupyter_info$nbformat
+  jupyter$nbformat_minor = jupyter_info$nbformat_minor
 
   for(i in seq_along(jupyter$cells)) {
     if(length(jupyter$cells[[i]]$metadata) == 0) jupyter$cells[[i]]['metadata'] = list(NULL)
@@ -65,3 +72,24 @@ rmd_to_jupyter <- function(infile, outfile) {
   cat(jsonlite::toJSON(jupyter, pretty=TRUE, auto_unbox=TRUE), file = outfile)
 
 }
+
+.default_jupyter_info = list(
+  r = list(
+    metadata = list(
+      kernelspec = list(display_name = "R", language = "", name = "ir"),
+      language_info = list(codemirror_mode = "r", file_extension = ".r",
+                           mimetype = "text/x-r-source", name = "R",
+                           pygments_lexer = "r",
+                           version = paste0(R.version$major, ".", R.version$minor))),
+    nbformat = 4, nbformat_minor = 0),
+
+  python = list(
+    metadata = list(
+      kernelspec = list(display_name = "Python 2", language = "python",
+                        name = "python2"),
+      language_info = list(codemirror_mode = list(name = "ipython", version = 2),
+                           file_extension = ".py", mimetype = "text/x-python",
+                           name = "python", nbconvert_exporter = "python",
+                           pygments_lexer = "ipython2", version = "2.7.9")),
+    nbformat = 4, nbformat_minor = 0))
+

@@ -7,6 +7,7 @@
 #' @import yaml
 #' @export
 jupyter_to_rmd = function(infile, outfile) {
+
   jupyter_list = jsonlite::fromJSON(infile, simplifyDataFrame = FALSE)
 
   jupyter_info = jupyter_list[names(jupyter_list) != "cells"]

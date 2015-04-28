@@ -4,9 +4,7 @@
 \alias{jupyter_to_rmd}
 \title{Convert a Jupyter Notebook file to an Rmd file}
 \usage{
-jupyter_to_rmd(infile, outfile, view = !is.null(getOption("viewer")),
-  header_metadata = TRUE, code_metadata = TRUE, text_metadata = TRUE,
-  knitr_metadata = TRUE)
+jupyter_to_rmd(infile, outfile)
 }
 \arguments{
 \item{infile}{the jupyter file to convert}

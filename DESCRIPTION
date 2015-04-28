@@ -7,5 +7,5 @@ Author: Noam Ross
 Maintainer: Noam Ross <noam.ross@gmail.com>
 Description: Launch and view Jupyter notebooks, convert between Jupyter and knitr notebook files
 License: MIT
-Imports: jsonlite, stringi, yaml, rstudioapi
+Imports: jsonlite, stringi, yaml, rstudioapi, knitr, rmarkdown
 LazyData: TRUE
