@@ -30,7 +30,8 @@ rmd_to_jupyter <- function(infile, outfile) {
       chunks[[i]]$source = chunks[[i]]$input.src
     }
     if(length(chunks[[i]]$source) > 1) {
-      chunks[[i]]$source[1:(length(chunks[[i]]$source) - 1)] = paste0(chunks[[i]]$source[1:(length(chunks[[i]]$source) - 1)], "\n")
+      chunks[[i]]$source[1:(length(chunks[[i]]$source) - 1)] =
+        stri_trim_both(paste0(chunks[[i]]$source[1:(length(chunks[[i]]$source) - 1)], "\n"))
     }
     if(identical(chunks[[i]]$source, "")) chunks[[i]]$source = character()
   }
@@ -52,12 +53,20 @@ rmd_to_jupyter <- function(infile, outfile) {
       cell$cell_type = "markdown"
       cell$metadata = list()
       cell$source = chunk$source
-
     }
-
     if(length(cell$metadata$knitr_meta) == 0) cell$metadata$knitr_meta = NULL
     return(cell)
   })
+
+  cells = lapply(cells, function(cell) {
+    if(cell$cell_type == "markdown" & length(cell$source) == 0) {
+      return(NULL)
+    } else {
+      return(cell)
+    }
+  })
+
+  cells = cells[!sapply(cells, is.null)]
 
   jupyter = list()
   jupyter$cells = cells
