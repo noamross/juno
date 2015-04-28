@@ -54,7 +54,7 @@ jupyter_server = function(notebook = NULL, dir=NULL, port=8888, ip='localhost', 
   if(is.null(dir) & !is.null(notebook)) {
     if(normalizePath(notebook) %in% normalizePath(list.files(getwd(), recursive=TRUE))) {
       dir = getwd()
-      notebook_path = paste0('/notebooks',
+      notebook_path = paste0('/notebooks/',
                              stri_extract_first_regex(normalizePath(notebook), paste0("(?<=", normalizePath(dir), "/).*")))
     } else {
       dir = dirname(normalizePath(notebook))
