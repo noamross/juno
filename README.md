@@ -23,7 +23,7 @@ Comments, issues, pull requests most welcome!
 You need some system dependencies to get this going. Here are the links to the
 install instructions.
 
--   [IPython](http://ipython.org/install.html)
+-   [IPython](http://ipython.org/install.html) 3.0 or later.
 -   The [IPython R Kernel](https://irkernel.github.io/)
 
 To install **juno**, run
