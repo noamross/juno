@@ -1,3 +1,5 @@
+[![Project Status: Suspended - Initial development has started, but there has not yet been a stable, usable release; work has been stopped for the time being but the author(s) intend on resuming work.](http://www.repostatus.org/badges/0.1.0/suspended.svg)](http://www.repostatus.org/#suspended)
+
 #juno: experimental rstudio/knitr/jupyter notebook mashups
 
 > *NASA's [spacecraft Juno](https://www.nasa.gov/mission_pages/juno/spacecraft/index.html)
